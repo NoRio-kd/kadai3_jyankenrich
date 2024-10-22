@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/quizcopy.css">
+    <link rel="stylesheet" href="./css/reset.css">
+</head>
+<body>
+    <!-- 問題 -->
+    <div id="quiz">
+        <div id="question">ここに問題が入ります</div>
+        <div class="choices">
+            <button class="choice" id="choice1">選択1</button>
+            <button class="choice" id="choice2">選択2</button>
+            <button class="choice" id="choice3">選択3</button>
+            <button class="choice" id="choice4">選択4</button>
+        </div>
+        <!-- 次へボタン -->    
+        <button id="next-btn">次へ</button>
+    </div>
+    <!-- 結果 -->
+     <div id="result" class="hide">
+        <h2>結果</h2>
+        <p id="score">ここにスコアが表示される</p>
+     </div>
+    
+    <!-- ここからjs -->
+    <script>
+
+
+    // 配列にオブジェクトを三つ格納
+    const quizData = [{
+        question: "Where is the capital of Tokyo?",
+        choice: ['tokyo', 'osaka', 'nagoya', 'fukuoka'],
+        correct: 1
+    },
+    {
+        question: "Where is the capital of Tokyo?",
+        choice: ['tokyo', 'osaka', 'nagoya', 'fukuoka'],
+        correct: 1
+    },
+    {
+        question: "Where is the capital of Tokyo?",
+        choice: ['tokyo', 'osaka', 'nagoya', 'fukuoka'],
+        correct: 1
+    }]
+    ;
+    
+    
+    // 変数の指定
+    let currentQuiz = 0    //現在のquiz番号。1問目はゼロ
+    let score = 0     //userが正解した数のカウント
+      
+    // HTML要素の取得
+    const questionEl = document.getElementById('question');
+    const choicesEl = document.querySelectorAll('.choice');
+    const nextBtn = document.getElementById('next-btn');
+    const resultEl = document.getElementById('result');
+    const scoreEl = document.getElementById('score');
+
+    // quizをロードする loadQuizという関数を定義してる（実行されてない）
+    function loadQuiz(){    //処理する内容
+    const currentQuizData = quizdata[currentQuiz];
+    questionEl.textContent = currentQuizData.question;
+    choicesEl.forEach(function(choicesEl,index){
+        choicesEl.textContent = currentQuizData.choices[index];
+        choiceEl.classList.remove('correct','wrong');
+    });
+    nextBtn.style.display ='none'
+    }
+    
+ 
+        //
+    
+    // 答えをチェックする🌷
+    choicesEl.forEach(function(choicesEl,index){
+        choicesEl.addEventListener('click',function(){
+            if(nextBtn.style.display == 'block')return;
+            checkAnswer(index);
+        });
+    });
+    // 次の問題または結果表示
+   nextBtn.addEventListener('click',()=>{
+    currentQuiz++;
+    if(currentQuiz<quizData.length){
+        loadQuiz();
+    }else{
+        displayResult();
+    }
+   });
+
+   
+
+            
+
+    </script>
+</body>
+</html>

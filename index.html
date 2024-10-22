@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="./css/reset.css">
+</head>
+<body>
+    <!-- 問題 -->
+    <div id="quiz">
+        <div id="question">ここに問題が入ります</div>
+        <div class="choices">
+            <button class="choice" id="choice1">選択1</button>
+            <button class="choice" id="choice2">選択2</button>
+            <button class="choice" id="choice3">選択3</button>
+            <button class="choice" id="choice4">選択4</button>
+        </div>
+        <!-- 次へボタン -->    
+        <button id="next-btn">次へ</button>
+    </div>
+    <!-- 結果 -->
+     <div id="result" class="hide">
+        <h2>結果</h2>
+        <p id="score">ここにスコアが表示される</p>
+     </div>
+    
+    <!-- ここからjs -->
+    <script>
+        const quizData = [  //配列にオブジェクト3つを格納
+            {
+                question: "Where is the capital city of Japan？",
+                choices: ["Osaka","tokyo","kyoto","fukuoka"],
+                correct: 1
+            },
+            {
+                question: "what is the height of Mt.fuji",
+                choices: ["3776m","2000m","1000m","3000m"],
+                correct: 0 
+            },
+            {
+                question: "What color is national flag of japan?",
+                choices: ["red and white","blue","green","yellow"],
+                correct: 0
+            }
+        ];
+
+        console.log(quizData[0].question);
+        console.log(quizData[1].choices);
+        console.log(quizData[2].correct);
+
+       // 変数の指定
+    let currentQuiz = 0        //現在のquiz番号   
+    let score = 0        //userが正解した数のカウント
+    
+    // html要素の取得
+    const questionEl = document.getElementById('question');
+            console.log(document.getElementById('question'));
+    const choicesEl = document.querySelectorAll('.choice'); //classだからドット忘れず
+            console.log(document.getElementById('.choice')); //null
+    const nextBtn = document.getElementById('next-btn');
+            console.log(document.getElementById('next-btn')); //documentのタイポでエラー
+    const resultEl = document.getElementById('result');
+            console.log(document.getElementById('result'));
+    const scoreEl = document.getElementById('score');
+            console.log(document.getElementById('score'));
+            
+    // quizをロードする loadQuizという関数を定義してる（実行されてない）
+    function loadQuiz() {
+        const currentQuizData = quizData[currentQuiz];
+            console.log(quizData[currentQuiz]); 
+        questionEl.textContent = currentQuizData.question;
+            console.log(currentQuizData.question)
+        choicesEl.forEach(function(choicesEl,index){
+        choicesEl.textContent = currentQuizData.choices[index];
+        choicesEl.classList.remove('correct', 'wrong');     
+        });
+        nextBtn.style.display = 'none';     //要素.style.css property名=value値
+      }
+
+
+        //currentQuizDataを定義する
+                //currentQuizDataのQuestionから質問を抜き出して表示
+                   //class属性がchoiceの全て。(choiceEl,index)はふぉrEachのコールバック関数
+            // 
+        //jqueryでいうaddclass
+         //次へボタンを非表示にする。要素.style.css property名=value値
+    
+
+    // 答えをチェックする🌷
+    function checkAnswer(index) {       //引数indexを受け取り選択肢の正解不正解を判断
+    const currentQuizData = quizData[currentQuiz]; //⭐️2🤩2
+    if (index === currentQuizData.correct) {
+        score++;
+        choicesEl[index].classList.add('correct');
+    } else {
+        choicesEl[index].classList.add('wrong');
+    }
+    nextBtn.style.display = 'block';
+    }
+
+
+    //💐選択肢をクリッく🌷無名関数を使用
+    choicesEl.forEach(function(choicesEl, index) {           //forEachはchoiceElに対して順番に処理を行う。choiceElのindex(何番目に)
+    choicesEl.addEventListener('click', function() {
+        if (nextBtn.style.display === 'block') return;      //=は二つでも問題ない
+        checkAnswer(index);
+    });
+    });
+
+    //無名関数を持ち要らなかった場合、handleClickって関数を定義してやる
+                // クリック時の処理を関数として定義
+            function handleClick(choicesEl, index) {
+                if (nextBtn.style.display == 'block') return;
+                checkAnswer(index);
+            }
+
+            // choicesEl の要素を順番に処理。 配列名.forEach((各配列の要素)=>{実行する内容});
+            choicesEl.forEach(function(choicesEl, index) {
+                choicesEl.addEventListener('click', function() {
+                    handleClick(choicesEl, index);  // クリックイベントに対応する関数を呼び出す
+                });
+            });
+
+
+
+    //💐次のクイズまたは結果表示🌷⇨ここでcheckAnswer関数を定義してる
+    nextBtn.addEventListener('click', function() {
+    currentQuiz++;
+    if (currentQuiz < quizData.length) {            //quizData という配列に 3つの問題（オブジェクト） が入っているため、quizData.length は 3 という値を返します。
+        loadQuiz();
+    } else {
+        displayResult();
+    }
+    });
+    
+        console.log(quizData.length); //lengthプロパティは配列の要素数を調べるために使う
+   
+    quizData.push({
+        question: "What is the national flower of japan",
+        choices: ["Cherry blossom", "Plum blossom", "Chrysanthemum", "Pine"],
+        correct: 0
+    });
+    console.log(quizData.length); // 4 配列の要素数を追加した場合、増える
+
+
+// アロー関数の場合
+    // nextBtn.addEventListener('click', () => {
+    //         currentQuiz++;
+    //         if (currentQuiz < quizData.length) {
+    //             loadQuiz();
+    //         } else {
+    //             displayResult();
+    //         }
+    //     });
+
+// 次のクイズまたは結果表示🌷
+// 結果を表示🌷
+function displayResult() {  //実行する内容
+            document.getElementById('quiz').classList.add('hide');  //hide classを加える処理
+            resultEl.classList.remove('hide');                      //hide classを消去する処理
+            scoreEl.textContent = `あなたのスコアは ${score}/${quizData.length} です`;
+        }
+
+//初期ロード🌷 loadQuiz関数を実行。こいつで問題が表示される
+loadQuiz();
+
+
+    </script>
+</body>
+</html>

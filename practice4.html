@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/quizcopy.css">
+    <link rel="stylesheet" href="./css/reset.css">
+</head>
+<body>
+    <!-- 問題 -->
+    <div id="quiz">
+        <div id="question">ここに問題が入ります</div>
+        <div class="choices">
+            <button class="choice" id="choice1">選択1</button>
+            <button class="choice" id="choice2">選択2</button>
+            <button class="choice" id="choice3">選択3</button>
+            <button class="choice" id="choice4">選択4</button>
+        </div>
+        <!-- 次へボタン -->    
+        <button id="next-btn">次へ</button>
+    </div>
+    <!-- 結果 -->
+     <div id="result" class="hide">
+        <h2>結果</h2>
+        <p id="score">ここにスコアが表示される</p>
+     </div>
+    
+    <!-- ここからjs -->
+    <script>
+
+
+    // 配列にオブジェクトを三つ格納
+    const quizData = [
+        {
+            question: "where is the capital of Japan?",
+            choices: ["osaka","tokyo","nagoya","fukuoka"],
+            correct: 1 
+        },
+        {
+            question: "where is the capital of Japan?",
+            choices: ["osaka","tokyo","nagoya","fukuoka"],
+            correct: 1 
+        },
+        {
+            question: "where is the capital of Japan?",
+            choices: ["osaka","tokyo","nagoya","fukuoka"],
+            correct: 1 
+        },
+    ];
+    
+      // 変数の指定
+    let currentQuiz = 0        //現在のquiz番号   
+    let score = 0        //userが正解した数のカウント
+    
+  
+    // HTML要素の取得
+    const questionEl = document.getElementById("question");
+    const choicesEl = document.querySelectorAll(".choice")
+    const nextBtn = document.getElementById("next-btn")
+    const resultEl = document.getElementById("result")
+    const scoreEl = document.getElementById("score")
+   
+
+    // quizをロードする loadQuizという関数を定義してる（実行されてない）
+    function loadQuiz() {
+        const currentQuizData = quizData[currentQuiz];
+        questionEl.textContent = currentQuiz.question;
+        choicesEl.forEach(function(choiceEl,index){
+        choiceEl.textContent = currentQuizData.choices[index];
+        choiceEl.classlist.remove('correct','wrong');
+    });
+    nextBtn.style.display = 'none'
+    }
+ 
+        //currentQuizDataを定義する
+                //currentQuizDataのQuestionから質問を抜き出して表示
+                   //class属性がchoiceの全て。(choiceEl,index)はふぉrEachのコールバック関数
+            // 
+        //jqueryでいうaddclass
+         //次へボタンを非表示にする。要素.style.css property名=value値
+    
+    
+    // 答えをチェックする🌷
+    function checkAnswer(index){
+        const currentQuizData = quizData[currentQuiz];
+        if(index == currentQuizData.correct){
+            score++;
+            choicesEl[index].classList.add('correct');
+        }else{
+            choicesEl[index].classList.add('wrong');
+        }
+        nextBtn.style.display = 'block';
+    }
+    //💐次のクイズまたは結果表示🌷⇨ここでcheckAnswer関数を定義してる
+    //関数の定義🍳
+       
+    //要素.style.css property名=value値
+    nextBtn.addEventListener('click',function(){
+        currentQuiz++;
+        if(currentQuiz<quizData.length){
+            loadQuiz();
+        }else{
+            displayResult();
+        }
+        });
+    
+    
+    //💐選択肢をクリック🌷
+       //forEachの中で無名関数が定義されている
+      
+    // 次の問題または結果表示
+   
+       //現在のクイズ番号を一つ進める
+          //もし全てのクイズが終了してたら、displayResule()関数がy晴れ結果を表示
+            
+        function displayResult(){
+            document.getElementById('quiz').classList.add('hide');
+            resultEl.classList.remove('hide');
+            scoreEl.textContent = `Your score is ${score}/${quizData.length}`
+        }
+
+        loadQuiz();
+   
+
+    </script>
+</body>
+</html>
